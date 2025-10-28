@@ -13,6 +13,7 @@ import java.util.List;
 
 public interface FlooringMasterServiceLayer {
     // --- Order Section ---
+    // Add Order Section
      void addOrder(Order order);
      LocalDate validateOrderDate(String orderDate) throws FlooringMasteryOrderDateInvalidException;
      void validateCustomerName(String name) throws FlooringMasteryCustomerInvalidNameException;
@@ -22,7 +23,9 @@ public interface FlooringMasterServiceLayer {
      Product getProduct(String productNumber) throws FlooringMasteryPersistenceException;
      BigDecimal validateProductArea(String area) throws FlooringMasteryInvalidAreaException;
      BigDecimal calculateCosts(BigDecimal taxCode, BigDecimal area, Product product);
+     boolean validateUserResponse(String userResponse);
 
+     // Edit Order Section
      void editOrder();
 
      void removeOrder(String orderNumber);
@@ -32,7 +35,6 @@ public interface FlooringMasterServiceLayer {
 
     // --- Tax Code ---
      List<TaxCode> getAllTaxCodes();
-
 
 
 }

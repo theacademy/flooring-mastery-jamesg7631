@@ -74,6 +74,7 @@ public class FlooringMasteryController {
     }
 
     public void addAnOrder() {
+        boolean returnToMainMenu = false;
         view.displayAddOrderBanner();
         String orderDate; // Will remove this line or the line below. Not decided yet!
         LocalDate orderDateObj;
@@ -145,12 +146,22 @@ public class FlooringMasteryController {
         // Calculate Order Costs
         ProductCosts costs = new ProductCosts(area, stateTaxCode, product);
         Order order = Order.createOrder(customerName, stateTaxCode, product, area, costs);
+
         // Display the Order Details
-        view.displayOrder(order);
-        view.confirmOrderPrompt();
+        while (true) {
+            try {
+                view.displayOrder(order);
+                String userResponse = view.confirmOrderPrompt();
+                boolean success = service.validateUserResponse(userResponse);
+                break;
+            } catch (FlooringMasteryInvalidConfirmationResponseException e) {
+                view.displayErrorMessage(e.getMessage());
+            }
+        }
+
 
         // Save Order to file
-        //Order order = new Order()
+        service.addOrder(order);
     }
 
     public void editAnOrder() {
