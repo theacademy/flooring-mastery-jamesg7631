@@ -4,11 +4,13 @@ import com.mthree.dao.FlooringMasteryOrderDateInvalidException;
 import com.mthree.dao.FlooringMasteryOrderDoesNotExistException;
 import com.mthree.dao.FlooringMasteryPersistenceException;
 import com.mthree.model.Order;
-import com.mthree.service.FlooringMasteryCustomerInvalidNameException;
-import com.mthree.service.FlooringMasterInvalidStateAbbreviationException;
-import com.mthree.service.FlooringMasterServiceLayer;
+import com.mthree.model.Product;
+import com.mthree.model.TaxCode;
+import com.mthree.pojo.ProductCosts;
+import com.mthree.service.*;
 import com.mthree.view.FlooringMasteryView;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -101,19 +103,54 @@ public class FlooringMasteryController {
             }
         }
         // Get state information
-        String stateCode;
+        TaxCode stateTaxCode;
         while (true) {
             try {
                 view.displayAllStates();
-                stateCode = view.displayStateNamePrompt();
-                service.validateStateAbbreviation();
-                service.validateStateAbbreviation();
-            } catch (FlooringMasteryPersistenceException e) {
-                view.displayErrorMessage(e.getMessage());
-            } catch (FlooringMasterInvalidStateAbbreviationException e) {
+                String stateCode = view.displayStateNamePrompt();
+                stateTaxCode = service.getTaxCode(stateCode);// Add line below for getting taxCode or rename this method to get it
+                break;
+            } catch (FlooringMasteryPersistenceException | FlooringMasterInvalidStateAbbreviationException e) {
+                // Would this approach cause an issue where you get stuck and can't return to main menu
                 view.displayErrorMessage(e.getMessage());
             }
         }
+
+        // Get Product Information
+        Product product;
+        while (true) {
+            try {
+                List<Product> allProducts = service.getAllProducts();
+                view.displayAllProducts(allProducts);
+                String productNumber = view.displayProductPrompt();
+                product = service.getProduct(productNumber);
+                break;
+            } catch (FlooringMasteryPersistenceException | FlooringMasteryInvalidProductNameException e) {
+                view.displayErrorMessage(e.getMessage());
+            }
+        }
+
+        // Record the Area of the order
+        BigDecimal area;
+        while (true) {
+            try {
+               String areaString = view.displayAreaPrompt();
+               area = service.validateProductArea(areaString);
+               break;
+            } catch (FlooringMasteryInvalidAreaException e) {
+                view.displayErrorMessage(e.getMessage());
+            }
+        }
+
+        // Calculate Order Costs
+        ProductCosts costs = new ProductCosts(area, stateTaxCode, product);
+        Order order = Order.createOrder(customerName, stateTaxCode, product, area, costs);
+        // Display the Order Details
+        view.displayOrder(order);
+        view.confirmOrderPrompt();
+
+        // Save Order to file
+        //Order order = new Order()
     }
 
     public void editAnOrder() {

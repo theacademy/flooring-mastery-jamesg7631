@@ -2,6 +2,7 @@ package com.mthree.view;
 
 import com.mthree.dao.FlooringMasteryPersistenceException;
 import com.mthree.model.Order;
+import com.mthree.model.Product;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -46,8 +47,7 @@ public class FlooringMasteryView {
     public void displayOrders(List<Order> orders) {
         // Not much guidance on how order should be displayed to console. Order can have a toStringMethod so can use that?
         for (Order order: orders) {
-            String orderInfo = order.toString();
-            userIO.print(orderInfo);
+            this.displayOrder(order);
         }
         userIO.readString("Please hit enter to continue");
     }
@@ -72,13 +72,33 @@ public class FlooringMasteryView {
         return userIO.readString("Please enter your name.");
     }
 
-    public void displayAllStates() throws FlooringMasteryPersistenceException {
+    public void displayAllStates() {
         // Enter the logic for displaying all states and their respective state code
         throw new UnsupportedOperationException("Not yet implemented!");
     }
 
     public String displayStateNamePrompt() {
         return userIO.readString("Please enter the abbreviation for the state.");
+    }
+
+    public void displayAllProducts(List<Product> allProducts) {
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
+
+    public String displayProductPrompt() {
+        return userIO.readString("Enter the product number");
+    }
+
+    public String displayAreaPrompt() {
+        return userIO.readString("Please enter the product area in square foot.");
+    }
+
+    public void displayOrder(Order order)  {
+        userIO.print(order.toString());
+    }
+
+    public String confirmOrderPrompt() {
+        return userIO.readString("Would you like to place the order ? (Y/N)");
     }
 
     // 3. Edit an Order
@@ -88,4 +108,7 @@ public class FlooringMasteryView {
         // Not sure what the requirement for this is. Please refer back to the specification
         userIO.print("Good bye !");
     }
+
+
+
 }

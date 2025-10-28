@@ -5,12 +5,12 @@ import java.math.BigDecimal;
 public class Product {
     private String productType;
     private BigDecimal costPerSquareFoot;
-    private BigDecimal taxRate;
+    private BigDecimal laborCostPerSquareFoot;
 
-    public Product(String productType, BigDecimal costPerSquareFoot, BigDecimal taxRate) {
+    public Product(String productType, BigDecimal costPerSquareFoot, BigDecimal laborCostPerSquareFoot) {
         this.productType = productType;
         this.costPerSquareFoot = costPerSquareFoot;
-        this.taxRate = taxRate;
+        this.laborCostPerSquareFoot = laborCostPerSquareFoot;
     }
 
     public String getProductType() {
@@ -29,11 +29,11 @@ public class Product {
         this.costPerSquareFoot = costPerSquareFoot;
     }
 
-    public BigDecimal getTaxRate() {
-        return taxRate;
+    public BigDecimal getLaborCostPerSquareFoot() {
+        return laborCostPerSquareFoot;
     }
 
-    public void setTaxRate(BigDecimal taxRate) {
-        this.taxRate = taxRate;
+    public void setLaborCostPerSquareFoot(BigDecimal laborCostPerSquareFoot) {
+        this.laborCostPerSquareFoot = laborCostPerSquareFoot;
     }
 }

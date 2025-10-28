@@ -4,9 +4,11 @@ import com.mthree.dao.FlooringMasteryDao;
 import com.mthree.dao.FlooringMasteryOrderDateInvalidException;
 import com.mthree.dao.FlooringMasteryPersistenceException;
 import com.mthree.model.Order;
+import com.mthree.model.Product;
 import com.mthree.model.State;
 import com.mthree.model.TaxCode;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -53,11 +55,30 @@ public class FlooringMasteryServiceLayerImpl implements FlooringMasterServiceLay
     }
 
     @Override
-    public void validateStateAbbreviation() throws FlooringMasterInvalidStateAbbreviationException {
+    public List<Product> getAllProducts() throws FlooringMasteryPersistenceException {
         throw new UnsupportedOperationException("Not yet implemented");
     }
 
-    // Edit Order
+    public TaxCode getTaxCode(String stateAbbreviation) throws FlooringMasterInvalidStateAbbreviationException {
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
+
+    @Override
+    public Product getProduct(String productNumber) throws FlooringMasteryPersistenceException {
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
+
+    @Override
+    public BigDecimal calculateCosts(BigDecimal taxCode, BigDecimal area, Product product) {
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
+
+    @Override
+    public BigDecimal validateProductArea(String area) throws FlooringMasteryInvalidAreaException {
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
+
+// Edit Order
 
     @Override
     public void editOrder() {
