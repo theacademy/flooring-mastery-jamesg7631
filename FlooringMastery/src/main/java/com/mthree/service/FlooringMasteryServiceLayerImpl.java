@@ -1,9 +1,14 @@
 package com.mthree.service;
 
 import com.mthree.dao.FlooringMasteryDao;
+import com.mthree.dao.FlooringMasteryOrderDateInvalidException;
+import com.mthree.dao.FlooringMasteryPersistenceException;
 import com.mthree.model.Order;
+import com.mthree.model.State;
 import com.mthree.model.TaxCode;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class FlooringMasteryServiceLayerImpl implements FlooringMasterServiceLayer {
@@ -22,10 +27,37 @@ public class FlooringMasteryServiceLayerImpl implements FlooringMasterServiceLay
 
     // --- Order Section ---
 
+    public LocalDate validateOrderDate(String date) throws FlooringMasteryOrderDateInvalidException {
+        try {
+            LocalDate orderDate = LocalDate.parse(date, DateTimeFormatter.ofPattern("MM/dd/yyyy"));
+            return orderDate;
+        } catch (Exception e) {
+            throw new FlooringMasteryOrderDateInvalidException(e.getMessage());
+        }
+    }
+
+    @Override
+    public void validateCustomerName(String name) throws FlooringMasteryCustomerInvalidNameException {
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
+    // Add Order
+
     @Override
     public void addOrder(Order order) {
         throw new UnsupportedOperationException("Not yet implemented");
     }
+
+    @Override
+    public List<State> getAllStates() throws FlooringMasteryPersistenceException {
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
+
+    @Override
+    public void validateStateAbbreviation() throws FlooringMasterInvalidStateAbbreviationException {
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
+
+    // Edit Order
 
     @Override
     public void editOrder() {

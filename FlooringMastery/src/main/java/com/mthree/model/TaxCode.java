@@ -3,6 +3,8 @@ package com.mthree.model;
 import java.math.BigDecimal;
 
 public class TaxCode {
+    // Why do I have taxCode I don't think its mentioned.
+    // Should I not have the state abbreviation instead
     private String taxCode;
     private String state;
     private BigDecimal taxRate;
