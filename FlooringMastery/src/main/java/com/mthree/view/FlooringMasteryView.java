@@ -1,9 +1,9 @@
 package com.mthree.view;
 
-import com.mthree.dao.FlooringMasteryPersistenceException;
 import com.mthree.model.Order;
 import com.mthree.model.Product;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -102,6 +102,66 @@ public class FlooringMasteryView {
     }
 
     // 3. Edit an Order
+    public void displayEditOrderBanner() {
+        userIO.print("--- Edit an Order ---");
+    }
+
+    public int getOrderNumber() {
+        return userIO.readInt("Please provide an order number.", 0, Integer.MAX_VALUE);
+    }
+
+    public String getStateName(String currentStateName) {
+        // I really need to take out so I can make use of previous validation logic
+        String newStateName = userIO.readString("Please enter the abbreviation for the state name (" +
+                currentStateName + ")");
+
+        if (newStateName.equals("")) {
+            return currentStateName;
+        }
+        return newStateName;
+    }
+
+    public String displayProductPrompt(String currentProductName) {
+        // Broke my method naming convention deliberately
+        // This is while writing the edit logic I have noticed similar functionality
+        // I was thinking if I try and mirror the method names it will make future refactoring easier
+        String newProductName = userIO.readString("Enter the product number. Current selected product is " + currentProductName);
+        return newProductName.equals("") ? currentProductName : newProductName;
+    }
+
+    public String displayAreaPrompt(String currentArea) {
+        String newArea = userIO.readString("Please enter the product area in square foot. + (" + currentArea);
+        if (newArea.equals("")) {
+            return currentArea;
+        }
+        return newArea;
+    }
+
+    public String getCustomerName(String currentName) {
+        // Personally I would add to the prompt "or press enter to keep current name"
+        // Probably in wrong place below. Will try and fix.
+        // I imagine I should return this to controller and then the controller call some method in the service layer
+        // which takes the new parameters in and updates the object
+        // This approach is very time consuming and hard to do in the timeframe
+        String returnedString = userIO.readString("Enter customer name (" + currentName +"):");
+        if (returnedString.isEmpty()) {
+            return currentName;
+        }
+        return returnedString;
+    }
+
+    // 4. Remove Order
+
+    public void displayRemoveOrderBanner() {
+        userIO.print("--- Display Remove Order Banner ---");
+    }
+
+    public boolean confirmOrderRemoval() {
+        userIO.readString("Can you confirm you would like to remove the order (Y/N)");
+    }
+
+
+
 
     // 6. Quit
     public void displayExitBanner() {

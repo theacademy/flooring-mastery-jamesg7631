@@ -24,14 +24,16 @@ public interface FlooringMasterServiceLayer {
      BigDecimal validateProductArea(String area) throws FlooringMasteryInvalidAreaException;
      BigDecimal calculateCosts(BigDecimal taxCode, BigDecimal area, Product product);
      boolean validateUserResponse(String userResponse);
+     List<Order> getAllOrders();
 
      // Edit Order Section
-     void editOrder();
+     //void editOrder(); I wanted to have this but it did not work out
 
-     void removeOrder(String orderNumber);
+    void editOrder(Order originalOrder, Order replacementOrder);
 
-     Order getOrder(String orderNumber);
-     List<Order> getAllOrders();
+    void removeOrder(String orderNumber);
+
+     Order getOrder(LocalDate orderDate, int orderNumber);
 
     // --- Tax Code ---
      List<TaxCode> getAllTaxCodes();

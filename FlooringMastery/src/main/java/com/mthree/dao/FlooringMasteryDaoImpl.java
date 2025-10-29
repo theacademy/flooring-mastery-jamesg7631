@@ -3,11 +3,13 @@ package com.mthree.dao;
 import com.mthree.model.Order;
 import com.mthree.model.TaxCode;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
 public class FlooringMasteryDaoImpl implements FlooringMasteryDao{
-    private Map<String, Order> orders;
+    private Map<LocalDate, Map<Integer,Order>> orders;
+
     private final String ORDER_FILE;
     private static final String DELIMETER = ",";
     // Order Section
@@ -36,9 +38,22 @@ public class FlooringMasteryDaoImpl implements FlooringMasteryDao{
         throw new UnsupportedOperationException("Not yet implemented");
     }
 
+    @Override
+    public Map<Integer, Order> getOrderByDate(LocalDate orderDate) {
+        loadOrders();
+        // Took inspiration from the UML here. Although now I have I can't see a
+        // way to handle things nicely.
+        return orders.get(orderDate);
+    }
+
     // --- Tax Code ---
     @Override
     public List<TaxCode> getAllTaxCodes() throws FlooringMasteryPersistenceException {
         throw new UnsupportedOperationException("Not yet implemented");
     }
+
+    private void loadOrders() throws FlooringMasteryPersistenceException {
+        // Read in orders
+    }
+
 }

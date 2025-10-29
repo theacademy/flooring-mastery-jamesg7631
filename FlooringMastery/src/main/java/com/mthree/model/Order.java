@@ -39,6 +39,54 @@ public class Order {
         this.total = total;
     }
 
+    public int getOrderNumber() {
+        return orderNumber;
+    }
+
+    public String getCustomerName() {
+        return customerName;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public BigDecimal getTaxRate() {
+        return taxRate;
+    }
+
+    public String getProductType() {
+        return productType;
+    }
+
+    public BigDecimal getArea() {
+        return area;
+    }
+
+    public BigDecimal getCostPerSquareFoot() {
+        return costPerSquareFoot;
+    }
+
+    public BigDecimal getLaborCostPerSquareFoot() {
+        return laborCostPerSquareFoot;
+    }
+
+    public BigDecimal getMaterialCost() {
+        return materialCost;
+    }
+
+    public BigDecimal getLaborCost() {
+        return laborCost;
+    }
+
+    public BigDecimal getTax() {
+        return tax;
+    }
+
+    public BigDecimal getTotal() {
+        return total;
+    }
+
     public static Order createOrder(String customerName, TaxCode taxCode, Product product, BigDecimal area, ProductCosts costs) {
         int orderNumber = Order.nextOrderNumber;
         Order.nextOrderNumber++;
@@ -50,4 +98,19 @@ public class Order {
                 product.getProductType(), product.getCostPerSquareFoot(), product.getLaborCostPerSquareFoot(),
                 area, costs.getMaterialCosts(), costs.getLaborCosts(), costs.getTaxCost(), costs.getTotalCost());
     }
+
+    public static Order modifyOrder(int orderNumber, String customerName, TaxCode taxCode, Product product, BigDecimal area, ProductCosts costs) {
+        // Not sure how to separate out most effectively. Do the below but ask Ronnie his thoughts
+        // Currently, order method is coupled too many parameters. Ask about Pojo and Dto and mapper?
+
+        return new Order(orderNumber, customerName,
+                taxCode.getState(), taxCode.getTaxRate(),
+                product.getProductType(), product.getCostPerSquareFoot(), product.getLaborCostPerSquareFoot(),
+                area, costs.getMaterialCosts(), costs.getLaborCosts(), costs.getTaxCost(), costs.getTotalCost());
+    }
+
+
+
+
+
 }

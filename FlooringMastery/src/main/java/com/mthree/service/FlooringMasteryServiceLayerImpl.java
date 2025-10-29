@@ -2,6 +2,7 @@ package com.mthree.service;
 
 import com.mthree.dao.FlooringMasteryDao;
 import com.mthree.dao.FlooringMasteryOrderDateInvalidException;
+import com.mthree.dao.FlooringMasteryOrderDoesNotExistException;
 import com.mthree.dao.FlooringMasteryPersistenceException;
 import com.mthree.model.Order;
 import com.mthree.model.Product;
@@ -12,6 +13,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Map;
 
 public class FlooringMasteryServiceLayerImpl implements FlooringMasterServiceLayer {
     private FlooringMasteryDao dao;
@@ -78,11 +80,14 @@ public class FlooringMasteryServiceLayerImpl implements FlooringMasterServiceLay
         throw new UnsupportedOperationException("Not yet implemented");
     }
 
-// Edit Order
+    // Edit Order
 
     @Override
-    public void editOrder() {
-        throw new UnsupportedOperationException("Not yet implemented");
+    public void editOrder(Order originalOrder, Order replacementOrder) {
+        // If I get time add logic to handle the case where for whatever reason removal fails.
+        // If removal fails we probably don't want to handle the other order
+        dao.removeOrder(originalOrder);
+        dao.addOrder(replacementOrder);
     }
 
     @Override
@@ -95,9 +100,20 @@ public class FlooringMasteryServiceLayerImpl implements FlooringMasterServiceLay
         throw new UnsupportedOperationException("Not yet implemented");
     }
 
+
     @Override
-    public Order getOrder(String orderNumber) {
+    public boolean validateUserResponse(String userResponse) {
         throw new UnsupportedOperationException("Not yet implemented");
+    }
+
+    @Override
+    public Order getOrder(LocalDate orderDate, int orderNumber) {
+        Map<Integer, Order> orderByDate = dao.getOrderByDate(orderDate);
+        Order order = orderByDate.get(orderNumber);
+        if (order == null) {
+            throw new FlooringMasteryOrderDoesNotExistException( "Order: " + orderNumber + " cannot be found");
+        }
+        return order;
     }
 
     // --- Tax Code Section ---
