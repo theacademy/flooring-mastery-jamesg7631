@@ -29,42 +29,38 @@ public class FlooringMasteryController {
         int menuSelection = 0; // Why not just ?
         boolean keepGoing = true;
 
-        try {
             while (keepGoing) {
-                menuSelection = getMenuSelection();
-                switch (menuSelection) {
-                    case 1:
-                        displayOrders();
-                        break;
-                    case 2:
-                        addAnOrder();
-                        break;
-                    case 3:
-                        editAnOrder();
-                        break;
-                    case 4:
-                        removeOrder();
-                        break;
-                    case 5:
-                        exportAllData();
-                        break;
-                    case 6:
-                        keepGoing = false;
-                        break;
-                    default:
-                        unknownCommand();
+                try {
+                    menuSelection = getMenuSelection();
+                    switch (menuSelection) {
+                        case 1:
+                            displayOrders();
+                            break;
+                        case 2:
+                            addAnOrder();
+                            break;
+                        case 3:
+                            editAnOrder();
+                            break;
+                        case 4:
+                            removeOrder();
+                            break;
+                        case 5:
+                            exportAllData();
+                            break;
+                        case 6:
+                            keepGoing = false;
+                            break;
+                        default:
+                            unknownCommand();
+                    }
+                } catch (OrderDoesNotExistException e) {
+                    view.displayErrorMessage(e.getMessage());
+                } catch (Exception e) {
+                    e.getMessage();
                 }
             }
             exitMessage();
-            } catch (OrderDoesNotExistException e) {
-                // Seems to be we should separate exceptions into specific types
-                // I thought we should only use exceptions for exceptional circumstances
-                // I know its in the requirements, but throwing an exception seems extreme for retrieving no orders
-                // Especially when it seems perfectly plausible orders were not placed for a future date
-                view.displayErrorMessage(e.getMessage());
-            } catch (Exception e) {
-                view.displayErrorMessage(e.getMessage());
-        }
     }
 
     private int getMenuSelection() {
