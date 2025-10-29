@@ -157,7 +157,14 @@ public class FlooringMasteryView {
     }
 
     public boolean confirmOrderRemoval() {
-        userIO.readString("Can you confirm you would like to remove the order (Y/N)");
+        while (true) {
+            String response = userIO.readString("Can you confirm you would like to remove the order (Y/N)").toLowerCase();
+            if (response.equals("y")) {
+                return true;
+            } else if (response.equals("n")) {
+               return false;
+            }
+        }
     }
 
 

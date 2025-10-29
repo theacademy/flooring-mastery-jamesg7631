@@ -59,9 +59,9 @@ public class FlooringMasteryController {
                 // I know its in the requirements, but throwing an exception seems extreme for retrieving no orders
                 // Especially when it seems perfectly plausible orders were not placed for a future date
                 view.displayErrorMessage(e.getMessage());
-            } catch (FlooringMasteryPersistenceException e) {
+            } catch (Exception e) {
                 view.displayErrorMessage(e.getMessage());
-            }
+        }
     }
 
     private int getMenuSelection() {
@@ -282,6 +282,7 @@ public class FlooringMasteryController {
         LocalDate orderDate = getOrderDate();
         int orderNumber = view.getOrderNumber();
         Order order = service.getOrder(orderDate, orderNumber);
+        boolean orderRemoval = view.confirmOrderRemoval();
     }
 
     public void exportAllData() {
