@@ -157,7 +157,7 @@ public class FlooringMasteryDaoImpl implements FlooringMasteryDao{
             }
             this.orders.put(orderDate, ordersForCurrentDate);
         }
-
+        Order.nextOrderNumber = maxOrderNumber + 1;
     }
 
 }

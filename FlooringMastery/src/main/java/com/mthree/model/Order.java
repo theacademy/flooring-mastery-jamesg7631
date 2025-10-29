@@ -6,7 +6,7 @@ import java.math.BigDecimal;
 
 public class Order {
     // Not sure how to keep the below working with persistence. Got to be careful
-    private static int nextOrderNumber = 0;
+    public static int nextOrderNumber = 0;
     private int orderNumber;
     private String customerName;
     private String state;
