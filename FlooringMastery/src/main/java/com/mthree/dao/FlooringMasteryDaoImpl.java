@@ -7,11 +7,15 @@ import org.springframework.stereotype.Component;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
+import java.util.stream.Stream;
 
 @Component
 public class FlooringMasteryDaoImpl implements FlooringMasteryDao{
@@ -94,6 +98,31 @@ public class FlooringMasteryDaoImpl implements FlooringMasteryDao{
         throw new UnsupportedOperationException("Not yet implemented");
     }
 
+    private List<String> getOrderFileNames() {
+        Path path = Paths.get(ORDER_FILE);
+        List<String> fileNames = new ArrayList<>();
+        try (Stream<Path> stream = Files.list(path)) {
+            stream.forEach(p -> {
+                fileNames.add(p.getFileName().toString());
+            });
+        } catch (IOException e) {
+            throw new FlooringMasteryPersistenceException("Failed to retrieve the file names for the orders");
+        }
+        return fileNames;
+    }
+
+    private LocalDate getDateFromOrderName(String orderFileName) {
+        try{
+            int dateBeginningIndex = 8;
+            int dateEndIndex = 15;
+            String pre_ = orderFileName.substring(dateBeginningIndex, dateEndIndex);
+            LocalDate date = LocalDate.parse(pre_, DateTimeFormatter.ofPattern("MMddyyyy"));
+            return date;
+        } catch (Exception e) {
+            throw new FlooringMasteryPersistenceException("Failed to convert order file to date object", e);
+        }
+    }
+
     // --- Tax Code ---
     @Override
     public List<TaxCode> getAllTaxCodes() throws FlooringMasteryPersistenceException {
@@ -103,19 +132,32 @@ public class FlooringMasteryDaoImpl implements FlooringMasteryDao{
     private void loadOrders() throws FlooringMasteryPersistenceException {
         // Read in orders
         Scanner fileReader;
-        try {
-            fileReader = new Scanner(new BufferedReader(new FileReader(ORDER_FILE)));
-        } catch (FileNotFoundException e) {
-            throw new FlooringMasteryPersistenceException("Could not load orders from memory.", e);
-        }
-        String currentLine;
-        Order currentOrder;
-        while (fileReader.hasNextLine()) {
-            currentLine = fileReader.nextLine();
-            currentOrder = unmarshallOrder(currentLine);
+        List<String> orderFileNames = this.getOrderFileNames();
+        int maxOrderNumber = -1;
+        for (String orderFile: orderFileNames) {
+            try {
+                fileReader = new Scanner(new BufferedReader(new FileReader(ORDER_FILE)));
+            } catch (FileNotFoundException e) {
+                throw new FlooringMasteryPersistenceException("Could not load orders from memory.", e);
+            }
 
-            this.orders.put
+            LocalDate orderDate = this.getDateFromOrderName(orderFile);
+            String currentLine;
+            Order currentOrder;
+
+            Map<Integer, Order> ordersForCurrentDate = new HashMap<>();
+
+            while (fileReader.hasNextLine()) {
+                currentLine = fileReader.nextLine();
+                currentOrder = unmarshallOrder(currentLine);
+                if (currentOrder.getOrderNumber() > maxOrderNumber) {
+                    maxOrderNumber = currentOrder.getOrderNumber();
+                }
+                ordersForCurrentDate.put(currentOrder.getOrderNumber(), currentOrder);
+            }
+            this.orders.put(orderDate, ordersForCurrentDate);
         }
+
     }
 
 }
