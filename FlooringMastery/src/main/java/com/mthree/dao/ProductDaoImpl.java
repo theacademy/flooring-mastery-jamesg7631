@@ -2,6 +2,7 @@ package com.mthree.dao;
 
 import com.mthree.model.Product;
 import com.mthree.model.TaxCode;
+import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -10,6 +11,7 @@ import java.math.BigDecimal;
 import java.nio.file.Paths;
 import java.util.*;
 
+@Component
 public class ProductDaoImpl implements ProductDao {
     private Map<String, Product> allProducts;
     private final String DELIMITER = ",";
