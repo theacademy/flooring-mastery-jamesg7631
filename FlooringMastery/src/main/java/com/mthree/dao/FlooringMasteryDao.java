@@ -15,6 +15,7 @@ public interface FlooringMasteryDao {
     public void removeOrder(Order order) throws FlooringMasteryPersistenceException;
     public Order getOrder(String orderNumber) throws FlooringMasteryPersistenceException;
     Map<Integer, Order> getOrderByDate(LocalDate orderDate);
+    Map<Integer, Order> getAllOrders();
 
     // --- Tax Code ---
     List<TaxCode> getAllTaxCodes() throws FlooringMasteryPersistenceException;

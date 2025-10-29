@@ -7,6 +7,10 @@ import java.util.Scanner;
 @Component
 public class UserIOConsoleImpl implements UserIO {
     private Scanner scanner;
+
+    public UserIOConsoleImpl() {
+        this.scanner = new Scanner(System.in);
+    }
     @Override
     public void print(String msg) {
         System.out.println(msg);
