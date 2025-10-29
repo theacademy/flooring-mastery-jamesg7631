@@ -67,7 +67,7 @@ public class FlooringMasteryView {
     }
 
     public String addOrderByDate() {
-        return userIO.readString("Enter an Order Date it must be in the future in the format 'DD/MM/YYYY");
+        return userIO.readString("Enter an Order Date it must be in the future in the format 'mm-dd-yyyy'");
     }
 
     // Badly named method. Try and rename

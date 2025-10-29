@@ -37,15 +37,35 @@ public class FlooringMasteryServiceLayerImpl implements FlooringMasterServiceLay
     public LocalDate validateOrderDate(String date) throws OrderDateInvalidException {
         try {
             LocalDate orderDate = LocalDate.parse(date, DateTimeFormatter.ofPattern("MM-dd-yyyy"));
+            LocalDate todaysDate = LocalDate.now();
+            if (!todaysDate.isBefore(orderDate)) {
+                // If this becomes common add to a utils folder and name static
+                DateTimeFormatter dateTimeFormat = DateTimeFormatter.ofPattern("MM-dd-yyyy");
+                String errorMessage = String.format("Order must be placed after: %s. You entered an order date of %s.",
+                        todaysDate.format(dateTimeFormat),
+                        orderDate.format(dateTimeFormat));
+                throw new OrderDateInvalidException(errorMessage);
+            }
             return orderDate;
+        } catch (OrderDateInvalidException e) {
+            throw new OrderDateInvalidException(e.getMessage());
         } catch (Exception e) {
-            throw new OrderDateInvalidException("User input; " + date + "is invalid.", e);
+            throw new OrderDateInvalidException("User input: " + date + " is invalid.", e);
         }
     }
 
     @Override
-    public void validateCustomerName(String name) throws FlooringMasteryCustomerInvalidNameException {
-        throw new UnsupportedOperationException("Not yet implemented");
+    public void validateCustomerName(String name) throws InvalidCustomerNameException{
+        if(name.isEmpty()) {
+            throw new InvalidCustomerNameException("Customer name must not be blank.");
+        }
+        for (char c: name.toLowerCase().toCharArray()) {
+            // If I get make this into separate method. Got more important things write now
+            if (!((c >= 'a' && c <= 'z') || ('0' <= c && c <= '9') || c == ' ' || c == '.' || c == ',')) {
+                String errorMessage = String.format("You entered: %s. All characters must be between [a-z] or [0-9] or be either in ['.', ',', ' ']" , name);
+               throw new InvalidCustomerNameException(errorMessage);
+            }
+        }
     }
     // Add Order
 

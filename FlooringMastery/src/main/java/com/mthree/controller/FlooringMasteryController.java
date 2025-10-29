@@ -201,7 +201,7 @@ public class FlooringMasteryController {
                 // The spec doesn't say how we should handle the case where name is invalid. Just tells us what an invalid name is
                 service.validateCustomerName(customerName);
                 break;
-            } catch (FlooringMasteryCustomerInvalidNameException e) {
+            } catch (InvalidCustomerNameException e) {
                 view.displayErrorMessage(e.getMessage());
             }
         }
@@ -247,8 +247,7 @@ public class FlooringMasteryController {
         // get date
         LocalDate orderDateObj = getOrderDate();
         // Get Customer Name
-        String customerName;
-        customerName = getCustomerName();
+        String customerName = getCustomerName();
         // Get state information
         TaxCode stateTaxCode = getTaxCode();
         // Get Product Information
