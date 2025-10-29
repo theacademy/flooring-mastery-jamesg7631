@@ -33,6 +33,7 @@ public class TaxDaoImpl implements TaxDao{
     private void loadFile() throws FlooringMasteryPersistenceException {
         this.allTaxes = new ArrayList<>();
 
+        // Don't think I need to close the scanner since a try with resources has been used
         try (Scanner scanner = new Scanner(new BufferedReader(new FileReader(this.TAXES_FILE)))) {
             String currentLine;
             TaxCode currentTaxCode;
