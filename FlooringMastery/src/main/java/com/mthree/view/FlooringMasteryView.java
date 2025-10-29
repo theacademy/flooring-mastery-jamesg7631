@@ -2,12 +2,14 @@ package com.mthree.view;
 
 import com.mthree.model.Order;
 import com.mthree.model.Product;
+import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+@Component
 public class FlooringMasteryView {
     private UserIO userIO;
 

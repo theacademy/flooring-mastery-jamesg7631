@@ -2,11 +2,13 @@ package com.mthree.dao;
 
 import com.mthree.model.Order;
 import com.mthree.model.TaxCode;
+import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
+@Component
 public class FlooringMasteryDaoImpl implements FlooringMasteryDao{
     private Map<LocalDate, Map<Integer,Order>> orders;
 

@@ -8,6 +8,7 @@ import com.mthree.model.Order;
 import com.mthree.model.Product;
 import com.mthree.model.State;
 import com.mthree.model.TaxCode;
+import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -15,6 +16,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
+@Component
 public class FlooringMasteryServiceLayerImpl implements FlooringMasterServiceLayer {
     private FlooringMasteryDao dao;
 

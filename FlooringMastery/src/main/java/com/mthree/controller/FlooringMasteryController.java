@@ -9,12 +9,14 @@ import com.mthree.model.TaxCode;
 import com.mthree.pojo.ProductCosts;
 import com.mthree.service.*;
 import com.mthree.view.FlooringMasteryView;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.function.BiFunction;
 
+@Component
 public class FlooringMasteryController {
     private FlooringMasteryView view;
     private FlooringMasterServiceLayer service;

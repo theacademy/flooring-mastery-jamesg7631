@@ -1,5 +1,8 @@
 package com.mthree.view;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class UserIOConsoleImpl implements UserIO {
     @Override
     public void print(String msg) {
