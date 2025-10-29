@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -35,10 +36,10 @@ public class FlooringMasteryServiceLayerImpl implements FlooringMasterServiceLay
 
     public LocalDate validateOrderDate(String date) throws OrderDateInvalidException {
         try {
-            LocalDate orderDate = LocalDate.parse(date, DateTimeFormatter.ofPattern("MM/dd/yyyy"));
+            LocalDate orderDate = LocalDate.parse(date, DateTimeFormatter.ofPattern("MM-dd-yyyy"));
             return orderDate;
         } catch (Exception e) {
-            throw new OrderDateInvalidException(e.getMessage());
+            throw new OrderDateInvalidException("User input; " + date + "is invalid.", e);
         }
     }
 
@@ -85,11 +86,11 @@ public class FlooringMasteryServiceLayerImpl implements FlooringMasterServiceLay
     // Edit Order
 
     @Override
-    public void editOrder(Order originalOrder, Order replacementOrder) {
+    public void editOrder(LocalDate orderDate, Order originalOrder, Order replacementOrder) {
         // If I get time add logic to handle the case where for whatever reason removal fails.
         // If removal fails we probably don't want to handle the other order
-        dao.removeOrder(originalOrder);
-        dao.addOrder(replacementOrder);
+        dao.removeOrder(orderDate, originalOrder);
+        dao.addOrder(orderDate, replacementOrder);
     }
 
     @Override
@@ -97,11 +98,22 @@ public class FlooringMasteryServiceLayerImpl implements FlooringMasterServiceLay
         throw new UnsupportedOperationException("Not yet implemented");
     }
 
+    // Probably delete the below
+
     @Override
-    public List<Order> getAllOrders() {
-        // Probably bad practice but short on time
-        return dao.getAllOrders();
+    public List<Order> getAllOrdersByDate(LocalDate orderDate) {
+        List<Order> result = new ArrayList<>();
+        Map<Integer, Order> orders = dao.getOrderByDate(orderDate);
+        if (orders == null) {
+            // To ensure with date format. Might be useful to have a utils package and make use of an enum?
+            throw new OrderDoesNotExistException("No orders exist on " + orderDate.format(DateTimeFormatter.ofPattern("MM-dd-YYYY")));
+        }
+        for (Order order: orders.values()) {
+            result.add(order);
+        }
+        return result;
     }
+
 
 
     @Override

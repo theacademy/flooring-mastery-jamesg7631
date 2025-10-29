@@ -27,9 +27,10 @@ public class FlooringMasteryController {
 
     public void run() {
         int menuSelection = 0; // Why not just ?
+        boolean keepGoing = true;
 
         try {
-            while (true) {
+            while (keepGoing) {
                 menuSelection = getMenuSelection();
                 switch (menuSelection) {
                     case 1:
@@ -48,12 +49,13 @@ public class FlooringMasteryController {
                         exportAllData();
                         break;
                     case 6:
+                        keepGoing = false;
                         break;
                     default:
                         unknownCommand();
                 }
-                exitMessage();
             }
+            exitMessage();
             } catch (OrderDoesNotExistException e) {
                 // Seems to be we should separate exceptions into specific types
                 // I thought we should only use exceptions for exceptional circumstances
@@ -70,9 +72,21 @@ public class FlooringMasteryController {
     }
 
     private void displayOrders() throws FlooringMasteryPersistenceException, OrderDoesNotExistException {
-        view.displayOrderBanner();
-        List<Order> orderList = service.getAllOrders();
-        view.displayOrders(orderList);
+        while (true) {
+            try {
+                view.displayOrderBanner();
+                String date = view.getAllOrdersByDate();
+                LocalDate validatedDate = service.validateOrderDate(date);
+                List<Order> orderList = service.getAllOrdersByDate(validatedDate);
+                view.displayOrders(orderList);
+                return;
+            } catch (OrderDoesNotExistException e) {
+                throw new OrderDoesNotExistException(e.getMessage());
+            } catch (Exception e) {
+                view.displayErrorMessage(e.getMessage());
+            }
+        }
+
     }
 
 
@@ -258,16 +272,14 @@ public class FlooringMasteryController {
 
     public void editAnOrder() {
         // throws  FlooringMasteryOrderDoesNotExistException
+        // Seems like business logic. Hard to move as I do occasionally use both view and service layer
         view.displayEditOrderBanner();
         LocalDate orderDate = getOrderDate();
         int orderNumber = view.getOrderNumber();
         Order order = service.getOrder(orderDate, orderNumber);
         String customerName = getCustomerName(order.getCustomerName());
-        // State
         TaxCode stateTaxCode = getTaxCode(order.getState());
-        // Product Type
         Product product = getProduct(order.getProductType());
-        // Area
         BigDecimal area = getArea(order.getArea());
         ProductCosts costs = new ProductCosts(area, stateTaxCode, product);
         Order modifiedOrder = Order.modifyOrder(order.getOrderNumber(), customerName, stateTaxCode,
@@ -275,7 +287,7 @@ public class FlooringMasteryController {
         confirmOrder(order);
         // Just a thought. My logic relies on the order attributes not being changed by mistake
         // Might be worth making the order attributes final
-        service.editOrder(order, modifiedOrder);
+        service.editOrder(orderDate, order, modifiedOrder);
         }
 
     public void removeOrder() {

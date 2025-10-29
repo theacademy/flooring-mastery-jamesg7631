@@ -23,13 +23,12 @@ public interface FlooringMasterServiceLayer {
      Product getProduct(String productNumber) throws FlooringMasteryPersistenceException;
      BigDecimal validateProductArea(String area) throws FlooringMasteryInvalidAreaException;
      BigDecimal calculateCosts(BigDecimal taxCode, BigDecimal area, Product product);
-     boolean validateUserResponse(String userResponse);
-     List<Order> getAllOrders();
 
+
+    boolean validateUserResponse(String userResponse);
+    List<Order> getAllOrdersByDate(LocalDate orderDate);
      // Edit Order Section
-     //void editOrder(); I wanted to have this but it did not work out
-
-    void editOrder(Order originalOrder, Order replacementOrder);
+    void editOrder(LocalDate orderDate, Order originalOrder, Order replacementOrder);
 
     void removeOrder(String orderNumber);
 

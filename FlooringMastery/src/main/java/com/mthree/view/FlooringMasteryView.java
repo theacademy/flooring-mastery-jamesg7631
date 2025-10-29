@@ -40,7 +40,7 @@ public class FlooringMasteryView {
     }
 
     public String getAllOrdersByDate() {
-        return userIO.readString("Enter an Order Date to display all order for that given date.");
+        return userIO.readString("Enter an Order Date to display all order for that given date. (mm-dd-yyyy)");
     }
 
     public void displayOrderDateBanner(LocalDate date) {
@@ -48,6 +48,7 @@ public class FlooringMasteryView {
     }
     public void displayOrders(List<Order> orders) {
         // Not much guidance on how order should be displayed to console. Order can have a toStringMethod so can use that?
+        userIO.print("");
         for (Order order: orders) {
             this.displayOrder(order);
         }
@@ -96,6 +97,8 @@ public class FlooringMasteryView {
     }
 
     public void displayOrder(Order order)  {
+        // I don't see specific guidance on the output format of the order.
+        // For now, I will keep as is!
         userIO.print(order.toString());
     }
 

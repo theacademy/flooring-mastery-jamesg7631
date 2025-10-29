@@ -34,6 +34,7 @@ public class OrderDaoImpl implements OrderDao {
         this.orders = new HashMap<>();
     }
 
+
     private String getOrderFileName(LocalDate orderDate) {
         return "Orders_" + orderDate.format(DateTimeFormatter.ofPattern("MMddyyyy")) + ".txt";
     }
@@ -64,11 +65,6 @@ public class OrderDaoImpl implements OrderDao {
         }
         ordersForDate.put(order.getOrderNumber(), order);
         writeOrders(orderDate);
-    }
-
-    @Override
-    public void editOrder(Order order) throws FlooringMasteryPersistenceException {
-        throw new UnsupportedOperationException("Not yet implemented");
     }
 
     @Override
@@ -104,6 +100,9 @@ public class OrderDaoImpl implements OrderDao {
         loadOrders();
         // Took inspiration from the UML here. Although now I have I can't see a
         // way to handle things nicely.
+
+        // empty orderDate file returns null. I thought about throwing the exception here.
+        // However, I thought that this exception should be handled using business logic
         return orders.get(orderDate);
     }
 
@@ -167,8 +166,8 @@ public class OrderDaoImpl implements OrderDao {
 
     private LocalDate getDateFromOrderName(String orderFileName) {
         try{
-            int dateBeginningIndex = 8;
-            int dateEndIndex = 16;
+            int dateBeginningIndex = 7;
+            int dateEndIndex = 15;
             String pre_ = orderFileName.substring(dateBeginningIndex, dateEndIndex);
             LocalDate date = LocalDate.parse(pre_, DateTimeFormatter.ofPattern("MMddyyyy"));
             return date;
@@ -178,8 +177,6 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     // --- Tax Code ---
-
-
     private void loadOrders() throws FlooringMasteryPersistenceException {
         // Need to break this method down. Currently, will be a nightmare to test
         // Clear in-memory map to reload from files
@@ -225,6 +222,7 @@ public class OrderDaoImpl implements OrderDao {
                 }
                 ordersForCurrentDate.put(currentOrder.getOrderNumber(), currentOrder);
             }
+
             fileReader.close();
             if (!ordersForCurrentDate.isEmpty()) {
                 this.orders.put(orderDate, ordersForCurrentDate);
@@ -257,5 +255,4 @@ public class OrderDaoImpl implements OrderDao {
         }
         out.close();
     }
-
 }
