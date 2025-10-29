@@ -1,6 +1,6 @@
 package com.mthree.service;
 
-import com.mthree.dao.ProductDao;
+import com.mthree.dao.OrderDao;
 import com.mthree.dao.OrderDateInvalidException;
 import com.mthree.dao.OrderDoesNotExistException;
 import com.mthree.dao.FlooringMasteryPersistenceException;
@@ -18,9 +18,9 @@ import java.util.Map;
 
 @Component
 public class FlooringMasteryServiceLayerImpl implements FlooringMasterServiceLayer {
-    private ProductDao dao;
+    private OrderDao dao;
 
-    public FlooringMasteryServiceLayerImpl(ProductDao dao) {
+    public FlooringMasteryServiceLayerImpl(OrderDao dao) {
         this.dao = dao;
     }
 
@@ -100,7 +100,7 @@ public class FlooringMasteryServiceLayerImpl implements FlooringMasterServiceLay
     @Override
     public List<Order> getAllOrders() {
         // Probably bad practice but short on time
-        return (List<Order>) dao.getAllOrders().values();
+        return dao.getAllOrders();
     }
 
 
