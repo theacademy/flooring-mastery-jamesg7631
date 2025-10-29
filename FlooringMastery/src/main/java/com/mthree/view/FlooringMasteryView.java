@@ -2,6 +2,7 @@ package com.mthree.view;
 
 import com.mthree.model.Order;
 import com.mthree.model.Product;
+import com.mthree.model.State;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -75,9 +76,9 @@ public class FlooringMasteryView {
         return userIO.readString("Please enter your name.");
     }
 
-    public void displayAllStates() {
+    public void displayAllStates(List<State> states) {
         // Enter the logic for displaying all states and their respective state code
-        throw new UnsupportedOperationException("Not yet implemented!");
+
     }
 
     public String displayStateNamePrompt() {

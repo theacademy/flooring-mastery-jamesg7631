@@ -5,6 +5,7 @@ import com.mthree.dao.OrderDoesNotExistException;
 import com.mthree.dao.FlooringMasteryPersistenceException;
 import com.mthree.model.Order;
 import com.mthree.model.Product;
+import com.mthree.model.State;
 import com.mthree.model.TaxCode;
 import com.mthree.pojo.ProductCosts;
 import com.mthree.service.*;
@@ -165,7 +166,8 @@ public class FlooringMasteryController {
         TaxCode stateTaxCode;
         while (true) {
             try {
-                view.displayAllStates();
+                List<State> allStates = service.getAllStates();
+                view.displayAllStates(allStates);
                 String stateCode = view.displayStateNamePrompt();
                 stateTaxCode = service.getTaxCode(stateCode);// Add line below for getting taxCode or rename this method to get it
                 break;
@@ -181,7 +183,8 @@ public class FlooringMasteryController {
         TaxCode stateTaxCode;
         while (true) {
             try {
-                view.displayAllStates();
+                List<State> allStates = service.getAllStates();
+                view.displayAllStates(allStates);
                 String stateCode = view.getStateName(currentState);
                 stateTaxCode = service.getTaxCode(stateCode);// Add line below for getting taxCode or rename this method to get it
                 break;
