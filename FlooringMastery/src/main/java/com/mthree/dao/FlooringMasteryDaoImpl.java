@@ -19,6 +19,9 @@ public class FlooringMasteryDaoImpl implements FlooringMasteryDao{
     public FlooringMasteryDaoImpl(String orderTextFile) {
         this.ORDER_FILE = orderTextFile;
     }
+    public FlooringMasteryDaoImpl() {
+        this.ORDER_FILE = "SampleFileData_floor/SampleFileData/Orders/";
+    }
 
     @Override
     public void addOrder(Order order) throws FlooringMasteryPersistenceException {

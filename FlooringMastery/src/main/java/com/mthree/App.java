@@ -8,7 +8,7 @@ public class App {
         AnnotationConfigApplicationContext appContext = new AnnotationConfigApplicationContext();
         appContext.scan("com.mthree");
         appContext.refresh();
-        FlooringMasteryController controller = appContext.getBean("controller", FlooringMasteryController.class);
+        FlooringMasteryController controller = appContext.getBean("flooringMasteryController", FlooringMasteryController.class);
         controller.run();
     }
 }

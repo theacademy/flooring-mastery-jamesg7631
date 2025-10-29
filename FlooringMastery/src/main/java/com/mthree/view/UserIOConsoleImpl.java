@@ -2,11 +2,14 @@ package com.mthree.view;
 
 import org.springframework.stereotype.Component;
 
+import java.util.Scanner;
+
 @Component
 public class UserIOConsoleImpl implements UserIO {
+    private Scanner scanner;
     @Override
     public void print(String msg) {
-        throw new UnsupportedOperationException("Not yet implemented");
+        System.out.println(msg);
     }
 
     @Override
@@ -21,12 +24,28 @@ public class UserIOConsoleImpl implements UserIO {
 
     @Override
     public int readInt(String prompt) {
-        throw new UnsupportedOperationException("Not yet implemented");
+        boolean invalidInput = true;
+        int num = 0;
+
+        while (invalidInput) {
+            try {
+                String stringValue = this.readString(prompt);
+                num = Integer.parseInt(stringValue);
+                invalidInput = false;
+            } catch (NumberFormatException e) {
+                this.print("Input Error. Please try again.");
+            }
+        }
+        return num;
     }
 
     @Override
     public int readInt(String prompt, int min, int max) {
-        throw new UnsupportedOperationException("Not yet implemented");
+        int result;
+        do {
+            result = readInt(prompt);
+        } while (result < min || result > max);
+        return result;
     }
 
     @Override
@@ -41,6 +60,8 @@ public class UserIOConsoleImpl implements UserIO {
 
     @Override
     public String readString(String prompt) {
-        throw new UnsupportedOperationException("Not yet implemented");
+        this.print(prompt);
+        String readLine = scanner.nextLine();
+        return readLine;
     }
 }
