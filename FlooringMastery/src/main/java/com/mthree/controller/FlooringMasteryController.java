@@ -1,7 +1,7 @@
 package com.mthree.controller;
 
-import com.mthree.dao.FlooringMasteryOrderDateInvalidException;
-import com.mthree.dao.FlooringMasteryOrderDoesNotExistException;
+import com.mthree.dao.OrderDateInvalidException;
+import com.mthree.dao.OrderDoesNotExistException;
 import com.mthree.dao.FlooringMasteryPersistenceException;
 import com.mthree.model.Order;
 import com.mthree.model.Product;
@@ -10,7 +10,6 @@ import com.mthree.pojo.ProductCosts;
 import com.mthree.service.*;
 import com.mthree.view.FlooringMasteryView;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Controller;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -55,7 +54,7 @@ public class FlooringMasteryController {
                 }
                 exitMessage();
             }
-            } catch (FlooringMasteryOrderDoesNotExistException e) {
+            } catch (OrderDoesNotExistException e) {
                 // Seems to be we should separate exceptions into specific types
                 // I thought we should only use exceptions for exceptional circumstances
                 // I know its in the requirements, but throwing an exception seems extreme for retrieving no orders
@@ -70,7 +69,7 @@ public class FlooringMasteryController {
         return this.view.displayMainMenu();
     }
 
-    private void displayOrders() throws FlooringMasteryPersistenceException, FlooringMasteryOrderDoesNotExistException{
+    private void displayOrders() throws FlooringMasteryPersistenceException, OrderDoesNotExistException {
         view.displayOrderBanner();
         List<Order> orderList = service.getAllOrders();
         view.displayOrders(orderList);
@@ -225,7 +224,7 @@ public class FlooringMasteryController {
                // Bad variable name. I didn't put much thought into it as I was unsure if I should even be returning a localdate in the first place
                // Was unsure whether the best practice is to use the localdate or use the string.
                // Getting dangerously close to doing business logic in the controller
-           } catch (FlooringMasteryOrderDateInvalidException e) {
+           } catch (OrderDateInvalidException e) {
                view.displayErrorMessage(e.getMessage());
            }
         }

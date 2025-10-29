@@ -1,6 +1,6 @@
 package com.mthree.service;
 
-import com.mthree.dao.FlooringMasteryOrderDateInvalidException;
+import com.mthree.dao.OrderDateInvalidException;
 import com.mthree.dao.FlooringMasteryPersistenceException;
 import com.mthree.model.Order;
 import com.mthree.model.Product;
@@ -15,7 +15,7 @@ public interface FlooringMasterServiceLayer {
     // --- Order Section ---
     // Add Order Section
      void addOrder(Order order);
-     LocalDate validateOrderDate(String orderDate) throws FlooringMasteryOrderDateInvalidException;
+     LocalDate validateOrderDate(String orderDate) throws OrderDateInvalidException;
      void validateCustomerName(String name) throws FlooringMasteryCustomerInvalidNameException;
      List<State> getAllStates() throws FlooringMasteryPersistenceException;
      TaxCode getTaxCode(String stateAbbreviation) throws FlooringMasterInvalidStateAbbreviationException;

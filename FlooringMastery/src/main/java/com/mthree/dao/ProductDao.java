@@ -1,13 +1,11 @@
 package com.mthree.dao;
 
 import com.mthree.model.Order;
-import com.mthree.model.TaxCode;
 
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Map;
 
-public interface FlooringMasteryDao {
+public interface ProductDao {
 
     // --- Orders ---
     public void addOrder(Order order) throws FlooringMasteryPersistenceException;
@@ -17,7 +15,5 @@ public interface FlooringMasteryDao {
     Map<Integer, Order> getOrderByDate(LocalDate orderDate);
     Map<Integer, Order> getAllOrders();
 
-    // --- Tax Code ---
-    List<TaxCode> getAllTaxCodes() throws FlooringMasteryPersistenceException;
 
 }

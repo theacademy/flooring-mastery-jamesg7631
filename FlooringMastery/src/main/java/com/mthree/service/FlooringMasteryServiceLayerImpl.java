@@ -1,8 +1,8 @@
 package com.mthree.service;
 
-import com.mthree.dao.FlooringMasteryDao;
-import com.mthree.dao.FlooringMasteryOrderDateInvalidException;
-import com.mthree.dao.FlooringMasteryOrderDoesNotExistException;
+import com.mthree.dao.ProductDao;
+import com.mthree.dao.OrderDateInvalidException;
+import com.mthree.dao.OrderDoesNotExistException;
 import com.mthree.dao.FlooringMasteryPersistenceException;
 import com.mthree.model.Order;
 import com.mthree.model.Product;
@@ -18,9 +18,9 @@ import java.util.Map;
 
 @Component
 public class FlooringMasteryServiceLayerImpl implements FlooringMasterServiceLayer {
-    private FlooringMasteryDao dao;
+    private ProductDao dao;
 
-    public FlooringMasteryServiceLayerImpl(FlooringMasteryDao dao) {
+    public FlooringMasteryServiceLayerImpl(ProductDao dao) {
         this.dao = dao;
     }
 
@@ -33,12 +33,12 @@ public class FlooringMasteryServiceLayerImpl implements FlooringMasterServiceLay
 
     // --- Order Section ---
 
-    public LocalDate validateOrderDate(String date) throws FlooringMasteryOrderDateInvalidException {
+    public LocalDate validateOrderDate(String date) throws OrderDateInvalidException {
         try {
             LocalDate orderDate = LocalDate.parse(date, DateTimeFormatter.ofPattern("MM/dd/yyyy"));
             return orderDate;
         } catch (Exception e) {
-            throw new FlooringMasteryOrderDateInvalidException(e.getMessage());
+            throw new OrderDateInvalidException(e.getMessage());
         }
     }
 
@@ -114,7 +114,7 @@ public class FlooringMasteryServiceLayerImpl implements FlooringMasterServiceLay
         Map<Integer, Order> orderByDate = dao.getOrderByDate(orderDate);
         Order order = orderByDate.get(orderNumber);
         if (order == null) {
-            throw new FlooringMasteryOrderDoesNotExistException( "Order: " + orderNumber + " cannot be found");
+            throw new OrderDoesNotExistException( "Order: " + orderNumber + " cannot be found");
         }
         return order;
     }

@@ -1,7 +1,6 @@
 package com.mthree.dao;
 
 import com.mthree.model.Order;
-import com.mthree.model.TaxCode;
 import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
@@ -18,17 +17,17 @@ import java.util.*;
 import java.util.stream.Stream;
 
 @Component
-public class FlooringMasteryDaoImpl implements FlooringMasteryDao{
+public class ProductDaoImpl implements ProductDao {
     private Map<LocalDate, Map<Integer,Order>> orders;
 
     private final String ORDER_FILE;
     private static final String DELIMETER = ",";
     // Order Section
 
-    public FlooringMasteryDaoImpl(String orderTextFile) {
+    public ProductDaoImpl(String orderTextFile) {
         this.ORDER_FILE = orderTextFile;
     }
-    public FlooringMasteryDaoImpl() {
+    public ProductDaoImpl() {
         this.ORDER_FILE = "SampleFileData_floor/SampleFileData/Orders/";
     }
 
@@ -114,7 +113,7 @@ public class FlooringMasteryDaoImpl implements FlooringMasteryDao{
     private LocalDate getDateFromOrderName(String orderFileName) {
         try{
             int dateBeginningIndex = 8;
-            int dateEndIndex = 15;
+            int dateEndIndex = 16;
             String pre_ = orderFileName.substring(dateBeginningIndex, dateEndIndex);
             LocalDate date = LocalDate.parse(pre_, DateTimeFormatter.ofPattern("MMddyyyy"));
             return date;
@@ -124,10 +123,7 @@ public class FlooringMasteryDaoImpl implements FlooringMasteryDao{
     }
 
     // --- Tax Code ---
-    @Override
-    public List<TaxCode> getAllTaxCodes() throws FlooringMasteryPersistenceException {
-        throw new UnsupportedOperationException("Not yet implemented");
-    }
+
 
     private void loadOrders() throws FlooringMasteryPersistenceException {
         // Read in orders
