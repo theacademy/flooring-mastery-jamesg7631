@@ -7,4 +7,5 @@ import java.util.Map;
 
 public interface ProductDao {
     List<Product> getAllProducts();
+    Product getProduct(int productNumber);
 }

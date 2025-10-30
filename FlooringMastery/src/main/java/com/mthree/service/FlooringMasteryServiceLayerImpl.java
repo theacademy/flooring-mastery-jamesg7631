@@ -1,12 +1,8 @@
 package com.mthree.service;
 
-import com.mthree.dao.OrderDao;
-import com.mthree.dao.OrderDateInvalidException;
-import com.mthree.dao.OrderDoesNotExistException;
-import com.mthree.dao.FlooringMasteryPersistenceException;
+import com.mthree.dao.*;
 import com.mthree.model.Order;
 import com.mthree.model.Product;
-import com.mthree.model.State;
 import com.mthree.model.TaxCode;
 import org.springframework.stereotype.Component;
 
@@ -20,10 +16,12 @@ import java.util.Map;
 @Component
 public class FlooringMasteryServiceLayerImpl implements FlooringMasterServiceLayer {
     private OrderDao orderDao;
-    private TaxCode taxDao;
-    private Product productDao;
+    private TaxDao taxDao;
+    private ProductDao productDao;
 
-    public FlooringMasteryServiceLayerImpl(OrderDao orderDao) {
+    public FlooringMasteryServiceLayerImpl(OrderDao orderDao, TaxDao taxDao, ProductDao productDao) {
+        this.taxDao = taxDao;
+        this.productDao = productDao;
         this.orderDao = orderDao;
     }
 
@@ -69,27 +67,44 @@ public class FlooringMasteryServiceLayerImpl implements FlooringMasterServiceLay
     // Add Order
 
     @Override
-    public void addOrder(Order order) {
-        throw new UnsupportedOperationException("Not yet implemented");
+    public void addOrder(LocalDate orderDate, Order order) {
+        // Thought about adding validation logic.
+        // However, I think its not necessary since we were validating as we were creating the object
+        orderDao.addOrder(orderDate, order);
     }
 
-    @Override
-    public List<State> getAllStates() throws FlooringMasteryPersistenceException {
-        throw new UnsupportedOperationException("Not yet implemented");
-    }
 
     @Override
     public List<Product> getAllProducts() throws FlooringMasteryPersistenceException {
-        throw new UnsupportedOperationException("Not yet implemented");
+        return productDao.getAllProducts();
     }
 
     public TaxCode getTaxCode(String stateAbbreviation) throws FlooringMasterInvalidStateAbbreviationException {
-        throw new UnsupportedOperationException("Not yet implemented");
+        List<TaxCode> allTaxCodes = getAllTaxCodes();
+        stateAbbreviation = stateAbbreviation.toUpperCase();
+        for (TaxCode taxCode: allTaxCodes) {
+           if (taxCode.getStateAbbreviation().equals(stateAbbreviation)) {
+               return taxCode;
+           }
+        }
+        throw new FlooringMasteryPersistenceException("State: " + stateAbbreviation + " could not be found!");
     }
 
     @Override
     public Product getProduct(String productNumber) throws FlooringMasteryPersistenceException {
-        throw new UnsupportedOperationException("Not yet implemented");
+        int selectedProductNumber;
+        try {
+            selectedProductNumber = Integer.parseInt(productNumber);
+            Product product = productDao.getProduct(selectedProductNumber);
+            if (product == null) {
+                throw new FlooringMasteryInvalidProductNumberException(String.format("Product not found %s", productNumber));
+            }
+            return product;
+        } catch (NumberFormatException e) {
+            String errorMessage = String.format("A product number must be provided. Provided number was %s.",
+                    productNumber, productNumber);
+            throw new FlooringMasteryInvalidProductNumberException(errorMessage, e);
+        }
     }
 
     @Override
@@ -99,7 +114,21 @@ public class FlooringMasteryServiceLayerImpl implements FlooringMasterServiceLay
 
     @Override
     public BigDecimal validateProductArea(String area) throws FlooringMasteryInvalidAreaException {
-        throw new UnsupportedOperationException("Not yet implemented");
+        // Could move to a config file and follow the convention for constants.
+        // Could perhaps store in product but don't think that is a good idea either.
+        // Give some thought on the refactor
+
+        // Could I have split the service later into 3 and then have this as constant belonging to that service layer?
+        int MINIMUM_AREA_SIZE = 100;
+        try{
+            BigDecimal areaNumber = new BigDecimal(area);
+            if (areaNumber.compareTo(new BigDecimal(MINIMUM_AREA_SIZE)) < 0) {
+                throw new NumberFormatException("Area provided is less than 100 Sq foot");
+            }
+            return areaNumber;
+        } catch (NumberFormatException e) {
+            throw new FlooringMasteryInvalidAreaException("Area must be a number greater than 100 sq foot", e);
+        }
     }
 
     // Edit Order
@@ -137,7 +166,13 @@ public class FlooringMasteryServiceLayerImpl implements FlooringMasterServiceLay
 
     @Override
     public boolean validateUserResponse(String userResponse) {
-        throw new UnsupportedOperationException("Not yet implemented");
+        String processedUserResponse = userResponse.toLowerCase();
+        if (processedUserResponse.equals("n")) {
+            return false;
+        } else if (processedUserResponse.equals("y")) {
+            return true;
+        }
+        throw new FlooringMasteryInvalidConfirmationResponseException("Response: " + userResponse + ". Please enter Y or N");
     }
 
     @Override
@@ -153,6 +188,6 @@ public class FlooringMasteryServiceLayerImpl implements FlooringMasterServiceLay
     // --- Tax Code Section ---
     @Override
     public List<TaxCode> getAllTaxCodes() {
-
+        return taxDao.getAllTaxCodes();
     }
 }

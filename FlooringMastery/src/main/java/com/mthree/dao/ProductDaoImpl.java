@@ -13,7 +13,7 @@ import java.util.*;
 
 @Component
 public class ProductDaoImpl implements ProductDao {
-    private Map<String, Product> allProducts;
+    private Map<Integer, Product> allProducts;
     private final String DELIMITER = ",";
     private final String PRODUCT_FILE;
 
@@ -31,11 +31,28 @@ public class ProductDaoImpl implements ProductDao {
     public List<Product> getAllProducts() {
         loadFile();
         List<Product> result = new ArrayList<>();
-        for(Product p: result) {
+        for(Product p: allProducts.values()) {
             result.add(p);
         }
         return result;
     }
+
+    public Product getProduct(int productNumber) {
+        // Nearing the territory of business logic. Need to reconsider when I get time
+        // It might be better if we always return the map from the dao instead
+        // of the list. That would make it easier to handle business logic in the
+        // service layer. For now, I'll leave this as future work
+
+        // This is would be handy as I then could remind the user of valid inputs based on the product numbers
+        try {
+            loadFile();
+            return allProducts.get(productNumber);
+        } catch (Exception e) {
+            String errorMessage = String.format("Product not found %s", productNumber);
+            throw new FlooringMasteryPersistenceException(errorMessage, e);
+        }
+    }
+
 
     private Product unMarshallProduct(String productAsText) {
         String[] productTokens = productAsText.split(DELIMITER);
@@ -56,10 +73,12 @@ public class ProductDaoImpl implements ProductDao {
                 scanner.nextLine();
             }
 
+            int productNumber = 1;
             while (scanner.hasNextLine()) {
                 currentLine = scanner.nextLine();
                 currentProduct = this.unMarshallProduct(currentLine);
-                this.allProducts.put(currentProduct.getProductType(), currentProduct);
+                this.allProducts.put(productNumber, currentProduct);
+                productNumber++;
             }
         } catch (FileNotFoundException e) {
             throw new FlooringMasteryPersistenceException("File not found: " + this.PRODUCT_FILE, e);

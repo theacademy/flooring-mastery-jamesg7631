@@ -5,22 +5,22 @@ import java.math.BigDecimal;
 public class TaxCode {
     // Why do I have taxCode I don't think its mentioned.
     // Should I not have the state abbreviation instead
-    private String taxCode;
+    private String stateAbbreviation;
     private String state;
     private BigDecimal taxRate;
 
-    public TaxCode(String taxCode, String state, BigDecimal taxRate) {
-        this.taxCode = taxCode;
+    public TaxCode(String stateAbbreviation, String state, BigDecimal taxRate) {
+        this.stateAbbreviation = stateAbbreviation;
         this.state = state;
         this.taxRate = taxRate;
     }
 
-    public String getTaxCode() {
-        return taxCode;
+    public String getStateAbbreviation() {
+        return stateAbbreviation;
     }
 
-    public void setTaxCode(String taxCode) {
-        this.taxCode = taxCode;
+    public void setStateAbbreviation(String stateAbbreviation) {
+        this.stateAbbreviation = stateAbbreviation;
     }
 
     public String getState() {

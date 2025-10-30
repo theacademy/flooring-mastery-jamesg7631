@@ -5,7 +5,6 @@ import com.mthree.dao.OrderDoesNotExistException;
 import com.mthree.dao.FlooringMasteryPersistenceException;
 import com.mthree.model.Order;
 import com.mthree.model.Product;
-import com.mthree.model.State;
 import com.mthree.model.TaxCode;
 import com.mthree.pojo.ProductCosts;
 import com.mthree.service.*;
@@ -88,13 +87,13 @@ public class FlooringMasteryController {
 
 
 
-    private void confirmOrder(Order order) {
+    private boolean confirmOrder(Order order) {
         while (true) {
             try {
                 view.displayOrder(order);
                 String userResponse = view.confirmOrderPrompt();
                 boolean success = service.validateUserResponse(userResponse);
-                break;
+                return success;
             } catch (FlooringMasteryInvalidConfirmationResponseException e) {
                 view.displayErrorMessage(e.getMessage());
             }
@@ -134,11 +133,12 @@ public class FlooringMasteryController {
         while (true) {
             try {
                 List<Product> allProducts = service.getAllProducts();
+                view.displayProductBanner();
                 view.displayAllProducts(allProducts);
                 String productNumber = view.displayProductPrompt();
                 product = service.getProduct(productNumber);
                 break;
-            } catch (FlooringMasteryPersistenceException | FlooringMasteryInvalidProductNameException e) {
+            } catch (FlooringMasteryPersistenceException | FlooringMasteryInvalidProductNumberException e) {
                 view.displayErrorMessage(e.getMessage());
             }
         }
@@ -166,7 +166,8 @@ public class FlooringMasteryController {
         TaxCode stateTaxCode;
         while (true) {
             try {
-                List<State> allStates = service.getAllStates();
+                List<TaxCode> allStates = service.getAllTaxCodes();
+                view.displayAllStatesBanner();
                 view.displayAllStates(allStates);
                 String stateCode = view.displayStateNamePrompt();
                 stateTaxCode = service.getTaxCode(stateCode);// Add line below for getting taxCode or rename this method to get it
@@ -183,7 +184,8 @@ public class FlooringMasteryController {
         TaxCode stateTaxCode;
         while (true) {
             try {
-                List<State> allStates = service.getAllStates();
+                List<TaxCode> allStates = service.getAllTaxCodes();
+                view.displayAllStatesBanner();
                 view.displayAllStates(allStates);
                 String stateCode = view.getStateName(currentState);
                 stateTaxCode = service.getTaxCode(stateCode);// Add line below for getting taxCode or rename this method to get it
@@ -261,11 +263,17 @@ public class FlooringMasteryController {
         ProductCosts costs = new ProductCosts(area, stateTaxCode, product);
         Order order = Order.createOrder(customerName, stateTaxCode, product, area, costs);
         // Display the Order Details
-        confirmOrder(order);
+        boolean confirmed = confirmOrder(order);
 
-
+        // I have probably thrown exceptions in the past where I shouldn't have. I did it to avoid having business logic in the controller like below.
+        // Which is the lesser of the two evils?
+        if (!confirmed) {
+            return;
+        }
         // Save Order to file
-        service.addOrder(order);
+        service.addOrder(orderDateObj, order);
+        view.displayOrderAddedSuccessfully();
+
     }
 
     public void editAnOrder() {

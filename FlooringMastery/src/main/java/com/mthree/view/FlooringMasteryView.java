@@ -2,10 +2,9 @@ package com.mthree.view;
 
 import com.mthree.model.Order;
 import com.mthree.model.Product;
-import com.mthree.model.State;
+import com.mthree.model.TaxCode;
 import org.springframework.stereotype.Component;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -76,21 +75,39 @@ public class FlooringMasteryView {
         return userIO.readString("Please enter your name.");
     }
 
-    public void displayAllStates(List<State> states) {
-        // Enter the logic for displaying all states and their respective state code
+    public void displayAllStatesBanner() {
+        userIO.print(" --- Display all States ---");
+    }
 
+    public void displayAllStates(List<TaxCode> taxCodes) {
+        for (TaxCode taxCode: taxCodes) {
+            String stateInformation = String.format("State Abbreviation: %s, State: %s", taxCode.getStateAbbreviation(), taxCode.getState());
+            userIO.print(stateInformation);
+        }
     }
 
     public String displayStateNamePrompt() {
         return userIO.readString("Please enter the abbreviation for the state.");
     }
 
+    public void displayProductBanner() {
+        userIO.print("--- Display all Products ---");
+    }
+
     public void displayAllProducts(List<Product> allProducts) {
-        throw new UnsupportedOperationException("Not yet implemented");
+        for (int i = 0; i < allProducts.size(); i++) {
+            displayProduct(allProducts.get(i),i + 1);
+        }
+    }
+
+    public void displayProduct(Product product, int productNumber) {
+        String output = String.format("Product Number: %d, Product Type: %s, Cost per Sq Foot: %s, Labor Cost per Sq Foot: %s, ",
+                productNumber, product.getProductType(), product.getCostPerSquareFoot(), product.getLaborCostPerSquareFoot());
+        userIO.print(output);
     }
 
     public String displayProductPrompt() {
-        return userIO.readString("Enter the product number");
+        return userIO.readString("Enter the product number.");
     }
 
     public String displayAreaPrompt() {
@@ -105,6 +122,10 @@ public class FlooringMasteryView {
 
     public String confirmOrderPrompt() {
         return userIO.readString("Would you like to place the order ? (Y/N)");
+    }
+
+    public void displayOrderAddedSuccessfully() {
+        userIO.print("Order added successfully!");
     }
 
     // 3. Edit an Order

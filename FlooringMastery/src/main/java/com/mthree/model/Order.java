@@ -7,7 +7,7 @@ import java.util.Objects;
 
 public class Order {
     // Not sure how to keep the below working with persistence. Got to be careful
-    public static int nextOrderNumber = 0;
+    public static int nextOrderNumber = 1;
     private int orderNumber;
     private String customerName;
     private String state;

@@ -4,7 +4,6 @@ import com.mthree.dao.OrderDateInvalidException;
 import com.mthree.dao.FlooringMasteryPersistenceException;
 import com.mthree.model.Order;
 import com.mthree.model.Product;
-import com.mthree.model.State;
 import com.mthree.model.TaxCode;
 
 import java.math.BigDecimal;
@@ -14,12 +13,13 @@ import java.util.List;
 public interface FlooringMasterServiceLayer {
     // --- Order Section ---
     // Add Order Section
-     void addOrder(Order order);
      LocalDate validateOrderDate(String orderDate) throws OrderDateInvalidException;
      void validateCustomerName(String name) throws FlooringMasteryCustomerInvalidNameException;
-     List<State> getAllStates() throws FlooringMasteryPersistenceException;
      TaxCode getTaxCode(String stateAbbreviation) throws FlooringMasterInvalidStateAbbreviationException;
-     List<Product> getAllProducts() throws FlooringMasteryPersistenceException;
+
+    void addOrder(LocalDate orderDate, Order order);
+
+    List<Product> getAllProducts() throws FlooringMasteryPersistenceException;
      Product getProduct(String productNumber) throws FlooringMasteryPersistenceException;
      BigDecimal validateProductArea(String area) throws FlooringMasteryInvalidAreaException;
      BigDecimal calculateCosts(BigDecimal taxCode, BigDecimal area, Product product);
