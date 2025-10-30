@@ -121,19 +121,21 @@ public class OrderDaoImpl implements OrderDao {
             BigDecimal laborCost = new BigDecimal(orderToken[9]);
             BigDecimal tax = new BigDecimal(orderToken[10]);
             BigDecimal total = new BigDecimal(orderToken[11]);
-            Order order = new Order(orderNumber,
+            Order order2 = new Order(
+                    orderNumber,
                     customerName,
                     state,
                     taxRate,
                     productType,
-                    area,
                     costPerSquareFoot,
                     laborCostPerSquareFoot,
+                    area,
                     materialCost,
                     laborCost,
                     tax,
                     total);
-            return order;
+
+            return order2;
         } catch (Exception e) {
             throw new FlooringMasteryPersistenceException("Failed to unmarshall order data", e);
         }

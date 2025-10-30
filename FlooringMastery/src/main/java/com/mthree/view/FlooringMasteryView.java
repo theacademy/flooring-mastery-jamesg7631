@@ -157,7 +157,7 @@ public class FlooringMasteryView {
     }
 
     public String displayAreaPrompt(String currentArea) {
-        String newArea = userIO.readString("Please enter the product area in square foot. + (" + currentArea);
+        String newArea = userIO.readString("Please enter the product area in square foot. (" + currentArea +")");
         if (newArea.equals("")) {
             return currentArea;
         }

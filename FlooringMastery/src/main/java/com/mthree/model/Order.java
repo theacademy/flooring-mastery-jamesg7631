@@ -23,9 +23,17 @@ public class Order {
     private BigDecimal tax; // Is this taxRate * total. If so, why do we have a separate attribute. Could lead to inconsistencies
     private BigDecimal total; // If the total is the sum of the other costs. Could have as method and not an attribute
 
-    public Order(int orderNumber, String customerName, String state, BigDecimal taxRate, String productType,
-                 BigDecimal costPerSquareFoot, BigDecimal laborCostPerSquareFoot, BigDecimal area, BigDecimal materialCost,
-                 BigDecimal laborCost, BigDecimal tax, BigDecimal total) {
+    public Order(int orderNumber,
+                 String customerName,
+                 String state,
+                 BigDecimal taxRate,
+                 String productType,
+                 BigDecimal costPerSquareFoot,
+                 BigDecimal laborCostPerSquareFoot,
+                 BigDecimal area, BigDecimal materialCost,
+                 BigDecimal laborCost,
+                 BigDecimal tax,
+                 BigDecimal total) {
         this.orderNumber = orderNumber;
         this.customerName = customerName;
         this.state = state;

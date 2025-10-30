@@ -118,7 +118,7 @@ public class FlooringMasteryController {
         BigDecimal area;
         while (true) {
             try {
-                String areaString = view.displayProductPrompt(currentArea.toPlainString());
+                String areaString = view.displayAreaPrompt(currentArea.toPlainString());
                 area = service.validateProductArea(areaString);
                 break;
             } catch (FlooringMasteryInvalidAreaException e) {
