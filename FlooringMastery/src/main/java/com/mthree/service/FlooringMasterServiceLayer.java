@@ -31,7 +31,7 @@ public interface FlooringMasterServiceLayer {
      // Edit Order Section
     void editOrder(LocalDate orderDate, Order originalOrder, Order replacementOrder);
 
-    void removeOrder(String orderNumber);
+    void removeOrder(LocalDate orderDate, Order order);
 
      Order getOrder(LocalDate orderDate, int orderNumber);
 

@@ -154,8 +154,13 @@ public class FlooringMasteryServiceLayerImpl implements FlooringMasterServiceLay
     }
 
     @Override
-    public void removeOrder(String orderNumber) {
-        throw new UnsupportedOperationException("Not yet implemented");
+    public void removeOrder(LocalDate orderDate, Order order) {
+        // Should add validation logic here but short on time
+        try{
+            orderDao.removeOrder(orderDate, order);
+        } catch (Exception e) {
+            throw new FlooringMasteryPersistenceException("Failed to remove order", e);
+        }
     }
 
     // Probably delete the below

@@ -298,11 +298,19 @@ public class FlooringMasteryController {
         }
 
     public void removeOrder() {
-        view.displayExitBanner();
+        view.displayRemoveOrderBanner();
         LocalDate orderDate = getOrderDate();
         int orderNumber = view.getOrderNumber();
         Order order = service.getOrder(orderDate, orderNumber);
+        view.displayOrder(order);
         boolean orderRemoval = view.confirmOrderRemoval();
+        if (!orderRemoval) {
+            view.displayOrderCancelled();
+            return;
+        }
+
+        service.removeOrder(orderDate, order);
+        view.displayOrderHasBeenRemoved();
     }
 
     public void exportAllData() {

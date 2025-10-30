@@ -180,7 +180,7 @@ public class FlooringMasteryView {
     // 4. Remove Order
 
     public void displayRemoveOrderBanner() {
-        userIO.print("--- Display Remove Order Banner ---");
+        userIO.print("--- Remove Order Banner ---");
     }
 
     public boolean confirmOrderRemoval() {
@@ -191,11 +191,17 @@ public class FlooringMasteryView {
             } else if (response.equals("n")) {
                return false;
             }
+            userIO.print(String.format("User Entered: %s", response));
         }
     }
 
+    public void displayOrderCancelled() {
+        userIO.print("Order has been cancelled!");
+    }
 
-
+    public void displayOrderHasBeenRemoved() {
+        userIO.print("Order has been removed");
+    }
 
     // 6. Quit
     public void displayExitBanner() {
