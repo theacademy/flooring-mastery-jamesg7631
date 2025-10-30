@@ -72,7 +72,7 @@ public class FlooringMasteryController {
             try {
                 view.displayOrderBanner();
                 String date = view.getAllOrdersByDate();
-                LocalDate validatedDate = service.validateOrderDate(date);
+                LocalDate validatedDate = service.validatePlacedOrderDate(date);
                 List<Order> orderList = service.getAllOrdersByDate(validatedDate);
                 view.displayOrders(orderList);
                 return;
@@ -235,7 +235,7 @@ public class FlooringMasteryController {
         while (true) {
            try {
                orderDate = view.addOrderByDate();
-               orderDateObj = service.validateOrderDate(orderDate);
+               orderDateObj = service.validateNewOrderDate(orderDate);
                return orderDateObj;
                // Bad variable name. I didn't put much thought into it as I was unsure if I should even be returning a localdate in the first place
                // Was unsure whether the best practice is to use the localdate or use the string.

@@ -13,16 +13,17 @@ import java.util.List;
 public interface FlooringMasterServiceLayer {
     // --- Order Section ---
     // Add Order Section
-     LocalDate validateOrderDate(String orderDate) throws OrderDateInvalidException;
-     void validateCustomerName(String name) throws FlooringMasteryCustomerInvalidNameException;
-     TaxCode getTaxCode(String stateAbbreviation) throws FlooringMasterInvalidStateAbbreviationException;
+    LocalDate validatePlacedOrderDate(String orderDate) throws OrderDateInvalidException;
+    LocalDate validateNewOrderDate(String orderDate) throws OrderDateInvalidException;
+    void validateCustomerName(String name) throws FlooringMasteryCustomerInvalidNameException;
+    TaxCode getTaxCode(String stateAbbreviation) throws FlooringMasterInvalidStateAbbreviationException;
 
     void addOrder(LocalDate orderDate, Order order);
 
     List<Product> getAllProducts() throws FlooringMasteryPersistenceException;
-     Product getProduct(String productNumber) throws FlooringMasteryPersistenceException;
-     int getProductNumber(String productNumber);
-     BigDecimal validateProductArea(String area) throws FlooringMasteryInvalidAreaException;
+    Product getProduct(String productNumber) throws FlooringMasteryPersistenceException;
+    int getProductNumber(String productNumber);
+    BigDecimal validateProductArea(String area) throws FlooringMasteryInvalidAreaException;
 
 
     boolean validateUserResponse(String userResponse);
@@ -31,11 +32,10 @@ public interface FlooringMasterServiceLayer {
     void editOrder(LocalDate orderDate, Order originalOrder, Order replacementOrder);
 
     void removeOrder(LocalDate orderDate, Order order);
-
-     Order getOrder(LocalDate orderDate, int orderNumber);
+    Order getOrder(LocalDate orderDate, int orderNumber);
 
     // --- Tax Code ---
-     List<TaxCode> getAllTaxCodes();
+    List<TaxCode> getAllTaxCodes();
 
 
 }

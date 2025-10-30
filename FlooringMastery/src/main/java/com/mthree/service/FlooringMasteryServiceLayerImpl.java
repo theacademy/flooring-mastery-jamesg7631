@@ -31,7 +31,18 @@ public class FlooringMasteryServiceLayerImpl implements FlooringMasterServiceLay
 
     // --- Order Section ---
 
-    public LocalDate validateOrderDate(String date) throws OrderDateInvalidException {
+    public LocalDate validatePlacedOrderDate(String date) {
+        try {
+            LocalDate orderDate = LocalDate.parse(date, DateTimeFormatter.ofPattern("MM-dd-yyyy"));
+            return orderDate;
+        } catch (OrderDateInvalidException e) {
+            throw new OrderDateInvalidException(e.getMessage());
+        } catch (Exception e) {
+            throw new OrderDateInvalidException("User input: " + date + " is invalid.", e);
+        }
+    }
+
+    public LocalDate validateNewOrderDate(String date) throws OrderDateInvalidException {
         try {
             LocalDate orderDate = LocalDate.parse(date, DateTimeFormatter.ofPattern("MM-dd-yyyy"));
             LocalDate todaysDate = LocalDate.now();

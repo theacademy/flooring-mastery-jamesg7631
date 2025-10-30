@@ -11,17 +11,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.context.ApplicationContext;
 
-import com.mthree.dao.FlooringMasteryPersistenceException;
-import com.mthree.dao.OrderDaoStubImpl;
-import com.mthree.dao.OrderDateInvalidException;
-import com.mthree.dao.OrderDoesNotExistException;
-import com.mthree.model.Order;
-import com.mthree.model.Product;
-import com.mthree.model.TaxCode;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 // REMOVED the Spring test annotations
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import java.math.BigDecimal;
@@ -53,24 +43,24 @@ class FlooringMasteryServiceLayerImplTest {
     // --- Validation Tests ---
 
     @Test
-    void testValidateOrderDateValid() {
+    void testValidateNewOrderDateValid() {
         String futureDateStr = LocalDate.now().plusDays(1).format(DateTimeFormatter.ofPattern("MM-dd-yyyy"));
-        LocalDate result = assertDoesNotThrow(() -> service.validateOrderDate(futureDateStr));
+        LocalDate result = assertDoesNotThrow(() -> service.validateNewOrderDate(futureDateStr));
         assertEquals(LocalDate.now().plusDays(1), result);
     }
 
     @Test
-    void testValidateOrderDatePast() {
+    void testValidateNewOrderDatePast() {
         OrderDateInvalidException ex = assertThrows(OrderDateInvalidException.class,
-                () -> service.validateOrderDate("01-01-2000"));
+                () -> service.validateNewOrderDate("01-01-2000"));
         assertTrue(ex.getMessage().contains("Order must be placed after:"));
     }
 
     @Test
-    void testValidateOrderDateToday() {
+    void testValidateNewOrderDateToday() {
         String todayStr = LocalDate.now().format(DateTimeFormatter.ofPattern("MM-dd-yyyy"));
         OrderDateInvalidException ex = assertThrows(OrderDateInvalidException.class,
-                () -> service.validateOrderDate(todayStr));
+                () -> service.validateNewOrderDate(todayStr));
         assertTrue(ex.getMessage().contains("Order must be placed after:"));
     }
 
