@@ -151,7 +151,8 @@ public class FlooringMasteryController {
             try {
                 List<Product> allProducts = service.getAllProducts();
                 view.displayAllProducts(allProducts);
-                String productNumber = view.displayProductPrompt(currentProductName);
+                int currentProductNumber = service.getProductNumber(currentProductName);
+                String productNumber = view.displayProductPrompt(String.valueOf(currentProductNumber));
                 product = service.getProduct(productNumber);
                 break;
             } catch (FlooringMasteryPersistenceException | FlooringMasteryInvalidProductNameException e) {

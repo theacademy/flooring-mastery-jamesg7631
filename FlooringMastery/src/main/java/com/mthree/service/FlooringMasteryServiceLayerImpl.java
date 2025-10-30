@@ -107,6 +107,18 @@ public class FlooringMasteryServiceLayerImpl implements FlooringMasterServiceLay
         }
     }
 
+    // Not very good code but needed to fix the issue I have. Ideally, for my code would be easier if the order could store the product number
+    public int getProductNumber(String productName) {
+        List<Product> products = productDao.getAllProducts();
+        for (int i = 0; i < products.size(); i++) {
+            Product product = products.get(i);
+            if (product.getProductType().equals(productName)) {
+                return i + 1;
+            }
+        }
+        throw new FlooringMasteryInvalidProductNameException(String.format("%s does not exist", productName));
+    }
+
     @Override
     public BigDecimal calculateCosts(BigDecimal taxCode, BigDecimal area, Product product) {
         throw new UnsupportedOperationException("Not yet implemented");

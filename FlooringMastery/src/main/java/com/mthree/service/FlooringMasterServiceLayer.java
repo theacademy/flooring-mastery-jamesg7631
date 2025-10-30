@@ -21,6 +21,7 @@ public interface FlooringMasterServiceLayer {
 
     List<Product> getAllProducts() throws FlooringMasteryPersistenceException;
      Product getProduct(String productNumber) throws FlooringMasteryPersistenceException;
+     int getProductNumber(String productNumber);
      BigDecimal validateProductArea(String area) throws FlooringMasteryInvalidAreaException;
      BigDecimal calculateCosts(BigDecimal taxCode, BigDecimal area, Product product);
 

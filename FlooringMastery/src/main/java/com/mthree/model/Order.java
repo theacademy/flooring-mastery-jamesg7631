@@ -95,7 +95,7 @@ public class Order {
         // Currently, order method is coupled too many parameters. Ask about Pojo and Dto and mapper?
 
         return new Order(orderNumber, customerName,
-                taxCode.getState(), taxCode.getTaxRate(),
+                taxCode.getStateAbbreviation(), taxCode.getTaxRate(),
                 product.getProductType(), product.getCostPerSquareFoot(), product.getLaborCostPerSquareFoot(),
                 area, costs.getMaterialCosts(), costs.getLaborCosts(), costs.getTaxCost(), costs.getTotalCost());
     }
@@ -105,7 +105,7 @@ public class Order {
         // Currently, order method is coupled too many parameters. Ask about Pojo and Dto and mapper?
 
         return new Order(orderNumber, customerName,
-                taxCode.getState(), taxCode.getTaxRate(),
+                taxCode.getStateAbbreviation(), taxCode.getTaxRate(),
                 product.getProductType(), product.getCostPerSquareFoot(), product.getLaborCostPerSquareFoot(),
                 area, costs.getMaterialCosts(), costs.getLaborCosts(), costs.getTaxCost(), costs.getTotalCost());
     }
