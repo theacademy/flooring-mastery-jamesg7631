@@ -119,10 +119,6 @@ public class FlooringMasteryServiceLayerImpl implements FlooringMasterServiceLay
         throw new FlooringMasteryInvalidProductNameException(String.format("%s does not exist", productName));
     }
 
-    @Override
-    public BigDecimal calculateCosts(BigDecimal taxCode, BigDecimal area, Product product) {
-        throw new UnsupportedOperationException("Not yet implemented");
-    }
 
     @Override
     public BigDecimal validateProductArea(String area) throws FlooringMasteryInvalidAreaException {
