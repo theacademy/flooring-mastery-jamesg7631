@@ -38,7 +38,7 @@ public class ProductCosts {
     }
 
     private BigDecimal totalGrossCost() {
-        return this.getMaterialCosts().multiply(this.getLaborCosts());
+        return this.getMaterialCosts().add(this.getLaborCosts());
     }
 
     public BigDecimal getTaxCost() {
