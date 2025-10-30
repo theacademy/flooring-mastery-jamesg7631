@@ -1,2 +1,1 @@
 OrderNumber,CustomerName,State,TaxRate,ProductType,Area,CostPerSquareFoot,LaborCostPerSquareFoot,MaterialCost,LaborCost,Tax,Total
-1,Jim,CA,25.00,Carpet,250,2.25,2.10,562.50,525.00,73828.125000,369140.625000

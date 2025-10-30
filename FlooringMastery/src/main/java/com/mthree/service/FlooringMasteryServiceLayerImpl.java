@@ -195,6 +195,9 @@ public class FlooringMasteryServiceLayerImpl implements FlooringMasterServiceLay
     @Override
     public Order getOrder(LocalDate orderDate, int orderNumber) {
         Map<Integer, Order> orderByDate = orderDao.getOrderByDate(orderDate);
+        if (orderByDate == null) {
+            throw new OrderDoesNotExistException("Order: " + orderNumber + " cannot be found");
+        }
         Order order = orderByDate.get(orderNumber);
         if (order == null) {
             throw new OrderDoesNotExistException( "Order: " + orderNumber + " cannot be found");

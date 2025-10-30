@@ -75,6 +75,9 @@ public class OrderDaoImpl implements OrderDao {
             throw new FlooringMasteryPersistenceException("No orders for date " + orderDate + " to remove from.");
         }
         ordersForDate.remove(order.getOrderNumber());
+        if (ordersForDate.isEmpty()) {
+            this.orders.remove(orderDate);
+        }
         writeOrders(orderDate);
     }
 
@@ -245,6 +248,7 @@ public class OrderDaoImpl implements OrderDao {
             throw new FlooringMasteryPersistenceException("Could not save order data.", e);
         }
 
+
         // Write header
         out.println(HEADER);
 
@@ -255,6 +259,7 @@ public class OrderDaoImpl implements OrderDao {
                 out.flush();
             }
         }
+        out.flush();
         out.close();
     }
 }
