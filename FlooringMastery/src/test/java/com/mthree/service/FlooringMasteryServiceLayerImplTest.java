@@ -1,18 +1,12 @@
 package com.mthree.service;
 
-import com.mthree.dao.FlooringMasteryPersistenceException;
-import com.mthree.dao.OrderDaoStubImpl;
-import com.mthree.dao.OrderDateInvalidException;
-import com.mthree.dao.OrderDoesNotExistException;
+import com.mthree.dao.*;
 import com.mthree.model.Order;
 import com.mthree.model.Product;
 import com.mthree.model.TaxCode;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.context.ApplicationContext;
 
-// REMOVED the Spring test annotations
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -24,20 +18,16 @@ class FlooringMasteryServiceLayerImplTest {
 
     private FlooringMasteryServiceLayerImpl service;
     private OrderDaoStubImpl orderDaoStub;
+    private TaxDaoStubImpl taxDaoStub;
+    private ProductDaoStubImpl productDaoStub;
 
     @BeforeEach
     void setUp() {
-        ApplicationContext ctx =
-                new ClassPathXmlApplicationContext("application.context.xml");
+        orderDaoStub = new OrderDaoStubImpl();
+        productDaoStub = new ProductDaoStubImpl();
+        taxDaoStub = new TaxDaoStubImpl();
 
-        // Manually get the beans from the context
-        service =
-                ctx.getBean("serviceLayer", FlooringMasteryServiceLayerImpl.class);
-        orderDaoStub =
-                ctx.getBean("orderDaoStub", OrderDaoStubImpl.class);
-
-        // Clear the stub's memory before each test
-        orderDaoStub.clearAllOrders();
+        service = new FlooringMasteryServiceLayerImpl(orderDaoStub, taxDaoStub, productDaoStub);
     }
 
     // --- Validation Tests ---

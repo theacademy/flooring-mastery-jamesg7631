@@ -47,7 +47,8 @@ class OrderDaoImplTest {
         Files.write(orderFile, List.of(HEADER, line1));
 
         // Initialize the DAO, pointing to the *parent* of the "Orders" directory
-        testOrderDao = new OrderDaoImpl(tempDir.toString() + "/", "dummyExport.txt");
+        String dummyExportPath = tempDir.resolve("dummyExport.txt").toString();
+        testOrderDao = new OrderDaoImpl(orderDir.toString(), dummyExportPath);
     }
 
     @Test
